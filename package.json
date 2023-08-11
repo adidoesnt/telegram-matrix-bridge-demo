@@ -1,0 +1,9 @@
+{
+  "name": "matrix-intro",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "matrix-js-sdk": "^27.1.0"
+  }
+}
