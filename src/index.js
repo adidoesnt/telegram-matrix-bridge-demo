@@ -1,31 +1,18 @@
-const sdk = require("matrix-js-sdk");
-require("dotenv").config();
+const { initMatrixBot, createRoom } = require("./matrix");
+const { getMatrixRoomId, storeMatrixRoomId, connectDB } = require("./mongo");
+const telegramBot = require("./telegram");
 
-async function authenticate() {
-  // URL for a hosted matrix server
-  const baseUrl = process.env.BASE_URL;
-
-  // martrix.org credentials
-  const user = process.env.USERNAME;
-  const password = process.env.PASSWORD;
-
-  // create client with only server URL
-  const client = sdk.createClient({
-    baseUrl,
+// initialise the bot, connect to the database and listen for messages from telegram
+initMatrixBot().then(async (client) => {
+  await connectDB();
+  telegramBot.on("message", async (msg) => {
+    const telegramUserId = msg.from.id;
+    const telegramFirstName = msg.from.first_name;
+    let matrixRoomId = await getMatrixRoomId(telegramUserId);
+    if (!matrixRoomId) {
+      matrixRoomId = await createRoom(client, telegramFirstName);
+      await storeMatrixRoomId(telegramUserId, matrixRoomId);
+    }
+    client.sendTextMessage(matrixRoomId, msg.text);
   });
-
-  // use credentials to obtain access token
-  const { access_token } = await client.loginWithPassword(user, password);
-
-  // modify client by setting access token
-  client.setAccessToken(access_token);
-  return client;
-}
-
-async function main(client) {
-  console.log(client);
-}
-
-authenticate().then(async (client) => {
-  await main(client);
 });

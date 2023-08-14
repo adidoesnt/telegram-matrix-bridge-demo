@@ -5,12 +5,18 @@
   "license": "MIT",
   "dependencies": {
     "dotenv": "^16.3.1",
-    "matrix-js-sdk": "^27.1.0"
+    "matrix-js-sdk": "^27.1.0",
+    "mongoose": "^7.4.3",
+    "node-telegram-bot-api": "^0.61.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
   },
   "scripts": {
+    "matrix:dev": "nodemon src/matrix/index.js",
+    "matrix:start": "node src/matrix/index.js",
+    "telegram:dev": "nodemon src/telegram/index.js",
+    "telegram:start": "node src/telegram/index.js",
     "dev": "nodemon src/index.js",
     "start": "node src/index.js"
   }
