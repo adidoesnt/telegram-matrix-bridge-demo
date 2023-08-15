@@ -6,7 +6,7 @@ const {
   connectDB,
 } = require("./mongo");
 const telegramBot = require("./telegram");
-const { delay, openLink } = require("./utils");
+const { delay } = require("./utils");
 
 // initialise the bot, connect to the database and listen for messages from telegram
 initMatrixBot().then(async (client) => {
@@ -38,6 +38,7 @@ initMatrixBot().then(async (client) => {
     }
     puppetClient.sendMessage(matrixRoomId, {
       body: msg.text,
+      msgtype: "m.text",
       displayname: telegramFirstName,
     });
   });
