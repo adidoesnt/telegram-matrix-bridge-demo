@@ -32,6 +32,15 @@ async function getMatrixRoomId(telegramUserId) {
   return matrixRoomId;
 }
 
+async function getTelegramUserId(matrixRoomId) {
+  let telegramUserId;
+  const chat = await Chat.findOne({
+    matrixRoomId,
+  });
+  if (chat) telegramUserId = chat.telegramUserId;
+  return telegramUserId;
+}
+
 // store a new telegram user id to matrix room id mapping
 async function storeMatrixRoomId(telegramUserId, matrixRoomId) {
   const chat = new Chat({
@@ -45,5 +54,6 @@ module.exports = {
   Chat,
   connectDB,
   getMatrixRoomId,
+  getTelegramUserId,
   storeMatrixRoomId,
 };
