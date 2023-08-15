@@ -22,15 +22,27 @@ async function initMatrixBot() {
   return client;
 }
 
-async function createRoom(client, telegramFirstName) {
+async function initPuppetClient(access_token) {
+  const baseUrl = process.env.BASE_URL;
+  const client = sdk.createClient({
+    baseUrl,
+  });
+  client.setGuest(true);
+  client.setAccessToken(access_token);
+  return client;
+}
+
+async function createRoom(client, telegramFirstName, user_id) {
   const { room_id } = await client.createRoom({
     visibility: "private",
     name: `${telegramFirstName} <-> Adi's Concierge`,
+    invite: [user_id],
   });
   return room_id;
 }
 
 module.exports = {
   initMatrixBot,
-  createRoom
+  createRoom,
+  initPuppetClient,
 };
