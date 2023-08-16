@@ -32,6 +32,7 @@ async function getMatrixRoomId(telegramUserId) {
   return matrixRoomId;
 }
 
+// use the matrix room id to query the database and check for an existing mapping
 async function getTelegramUserId(matrixRoomId) {
   let telegramUserId;
   const chat = await Chat.findOne({

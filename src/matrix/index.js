@@ -23,11 +23,18 @@ async function initMatrixBot() {
 }
 
 async function initPuppetClient(access_token) {
+  // URL for a hosted matrix server
   const baseUrl = process.env.BASE_URL;
+
+  // create puppet client with only server URL
   const client = sdk.createClient({
     baseUrl,
   });
+
+  // set the puppet client to be a guest
   client.setGuest(true);
+
+  // modify puppet client by setting its access token to the guest access token obtained
   client.setAccessToken(access_token);
   return client;
 }
